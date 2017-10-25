@@ -1,0 +1,44 @@
+{
+  "name": "app-generator",
+  "version": "0.0.1",
+  "description": "Simple Cordova Iframe Generator",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon --exec 'babel-node' app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BosNaufal/app-generator.git"
+  },
+  "keywords": [
+    "generator",
+    "app",
+    "cordova",
+    "cordova-iframe",
+    "iframe",
+    "android",
+    "app-generator",
+    "iframe-android",
+    "node",
+    "express"
+  ],
+  "author": "Naufal Rabbani <bosnaufalemail@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BosNaufal/app-generator/issues"
+  },
+  "homepage": "https://github.com/BosNaufal/app-generator#readme",
+  "dependencies": {
+    "babel-standalone": "^6.26.0",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "handlebars": "^4.0.11",
+    "multer": "^1.3.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "cordova": "^7.1.0",
+    "nodemon": "^1.12.1"
+  }
+}

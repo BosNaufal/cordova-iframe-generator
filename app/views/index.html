@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>App Generator</title>
+</head>
+<body>
+  <form action="/create" method="POST" enctype="multipart/form-data">
+    <input type="text" name="packageName" placeholder="com.example.hello" />
+    <input type="text" name="appName" placeholder="AppName" />
+    <input type="text" name="appLink" placeholder="http://p.plansys.co/cordova-iframe/" />
+    <textarea name="description" placeholder="App Description"></textarea>
+    <input type="text" name="authorName" placeholder="Author Name" />
+    <input type="email" name="authorEmail" placeholder="authoremail@gmail.com" />
+    <textarea name="jsContent" placeholder="JS Content">// Inject when the plugin required custom constructor that web doesn't know\n    injectToIframe(function (success, error, options) {\n      navigator.geolocation.getCurrentPosition\n        (function (position) {\n          var webObject = {\n            coords: {\n              accuracy: position.coords.accuracy,\n              altitude: position.coords.altitude,\n              altitudeAccuracy: position.coords.altitudeAccuracy,\n              heading: position.coords.heading,\n              latitude: position.coords.latitude,\n              longitude: position.coords.longitude,\n              speed: position.coords.speed,\n            },\n            timestamp: position.timestamp,\n          }\n          return success(webObject);\n        }, function (err) {\n          var webObject = {\n            code: err.code,\n            message: err.message,\n          }\n          return error(webObject);\n        }, options || null)\n    }, \"getCurrentPosition\");</textarea>
+    <input type="text" name="plugins" value="cordova-plugin-whitelist,cordova-plugin-geolocation" />
+    <input type="file" name="icon" />
+    <button type="submit">Submit</button>
+  </form>
+</body>
+</html>

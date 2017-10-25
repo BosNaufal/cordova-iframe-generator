@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Iframe</title>
+  </head>
+  <body>
+    <h1>InsyaaAllah Aman...</h1>
+    <p>Bismillah, Mudahkanlah....</p>
+    <pre id="result"></pre>
+    <script>
+      // setTimeout hanya untuk simulasi delay deviceReady
+      setTimeout(function () {
+        // Get Navigator
+        const Device = window.getDevice();
+        console.log(Device);
+        // Device.app.exitApp()
+
+        // use custom function plugin for incompatible plugin Constructor
+        // Should define it first at js/index
+        window.cordova.getCurrentPosition(function (position) {
+          alert("success");
+          console.log("success", position.coords.latitude)
+          console.log('Latitude: '          + position.coords.latitude          + '\n' +
+                  'Longitude: '         + position.coords.longitude         + '\n' +
+                  'Altitude: '          + position.coords.altitude          + '\n' +
+                  'Accuracy: '          + position.coords.accuracy          + '\n' +
+                  'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
+                  'Heading: '           + position.coords.heading           + '\n' +
+                  'Speed: '             + position.coords.speed             + '\n' +
+                  'Timestamp: '         + position.timestamp                + '\n');
+          var preContent = JSON.stringify(position, null, " ");
+          document.getElementById("result").innerHTML = preContent;
+        }, function(err) {
+          console.log("Error");
+          console.log(JSON.stringify(err));
+          var preContent = JSON.stringify(err, null, " ");
+          document.getElementById("result").innerHTML = preContent;
+        });
+
+        // Compatible Plugin Constructor Response
+        const FileTransfer = window.getCordova("FileTransfer");
+        var fileTransfer = new FileTransfer();
+        var fileURL = 'cdvfile://localhost/persistent/download/';
+        var uri = encodeURI('https://raw.githubusercontent.com/BosNaufal/react-loading-bar/master/LICENSE');
+        fileTransfer.download(
+            uri,
+            fileURL,
+            function(entry) {
+                console.log("download complete: " + entry.toURL());
+            },
+            function(error) {
+                console.log("download error source " + error.source);
+                console.log("download error target " + error.target);
+                console.log("download error code" + error.code);
+            },
+            false, {}
+        );
+      }, 1000);
+    </script>
+  </body>
+</html>
