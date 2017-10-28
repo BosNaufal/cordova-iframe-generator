@@ -3,19 +3,89 @@
 <head>
   <meta charset="UTF-8">
   <title>App Generator</title>
+  <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/static/CodeMirror/lib/codemirror.css" />
+  <link rel="stylesheet" href="/static/main.css" />
 </head>
 <body>
-  <form action="/create" method="POST" enctype="multipart/form-data">
-    <input type="text" name="packageName" placeholder="com.example.hello" />
-    <input type="text" name="appName" placeholder="AppName" />
-    <input type="text" name="appLink" placeholder="http://p.plansys.co/cordova-iframe/" />
-    <textarea name="description" placeholder="App Description"></textarea>
-    <input type="text" name="authorName" placeholder="Author Name" />
-    <input type="email" name="authorEmail" placeholder="authoremail@gmail.com" />
-    <textarea name="jsContent" placeholder="JS Content">// Inject when the plugin required custom constructor that web doesn't know\n    injectToIframe(function (success, error, options) {\n      navigator.geolocation.getCurrentPosition\n        (function (position) {\n          var webObject = {\n            coords: {\n              accuracy: position.coords.accuracy,\n              altitude: position.coords.altitude,\n              altitudeAccuracy: position.coords.altitudeAccuracy,\n              heading: position.coords.heading,\n              latitude: position.coords.latitude,\n              longitude: position.coords.longitude,\n              speed: position.coords.speed,\n            },\n            timestamp: position.timestamp,\n          }\n          return success(webObject);\n        }, function (err) {\n          var webObject = {\n            code: err.code,\n            message: err.message,\n          }\n          return error(webObject);\n        }, options || null)\n    }, \"getCurrentPosition\");</textarea>
-    <input type="text" name="plugins" value="cordova-plugin-whitelist,cordova-plugin-geolocation" />
-    <input type="file" name="icon" />
-    <button type="submit">Submit</button>
-  </form>
+  <div class="container">
+
+    <h1>App Generator</h1>
+    <form class="form" action="/create" method="POST" enctype="multipart/form-data">
+      <div class="form-group">
+        <label for="">Package Name</label>
+        <input class="form-control" type="text" name="packageName" placeholder="com.example.hello" />
+      </div>
+      <div class="form-group">
+        <label for="">App Name</label>
+        <input class="form-control" type="text" name="appName" placeholder="AppName" />
+      </div>
+      <div class="form-group">
+        <label for="">App Link</label>
+        <input class="form-control" type="text" name="appLink" placeholder="http://p.plansys.co/cordova-iframe/" />
+      </div>
+      <div class="form-group">
+        <label for="">Description</label>
+        <textarea class="form-control" name="description" placeholder="App Description"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="">Author Name</label>
+        <input class="form-control" type="text" name="authorName" placeholder="Author Name" />
+      </div>
+      <div class="form-group">
+        <label for="">Author Email</label>
+        <input class="form-control" type="email" name="authorEmail" placeholder="authoremail@gmail.com" />
+      </div>
+      <div class="form-group">
+        <label for="">JS Content (Don't worry, it has babel support)</label>
+        <textarea class="form-control" data-ref="codemirror" name="jsContent" placeholder="JS Content">
+// Inject when the plugin required custom constructor that web doesn't know
+injectToIframe(function (success, error, options) {
+  navigator.geolocation.getCurrentPosition
+    (function (position) {
+      var webObject = {
+        coords: {
+          accuracy: position.coords.accuracy,
+          altitude: position.coords.altitude,
+          altitudeAccuracy: position.coords.altitudeAccuracy,
+          heading: position.coords.heading,
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          speed: position.coords.speed,
+        },
+        timestamp: position.timestamp,
+      }
+      return success(webObject);
+    }, function (err) {
+      var webObject = {
+        code: err.code,
+        message: err.message,
+      }
+      return error(webObject);
+    }, options || null)
+  }, "getCurrentPosition");
+        </textarea>
+      </div>
+      <div class="form-group">
+        <label for="">Plugins (separated by comma no space)</label>
+        <input class="form-control" type="text" name="plugins" value="cordova-plugin-whitelist,cordova-plugin-geolocation" />
+      </div>
+      <div class="form-group">
+        <label for="">Icon</label>
+        <input class="form-control" type="file" name="icon" />
+      </div>
+      <button class="btn btn-primary" type="submit">Submit</button>
+    </form>
+  </div>
+  <script type="text/javascript" src="/static/CodeMirror/lib/codemirror.js"></script>
+  <script type="text/javascript" src="/static/CodeMirror/mode/javascript/javascript.js"></script>
+  <script>
+    var editorEl = document.body.querySelector(`[data-ref="codemirror"]`)
+    var codemirror = CodeMirror.fromTextArea(editorEl, {
+      mode: "javascript",
+      lineNumbers: true
+    })
+    codemirror.doc.setValue(this.editorEl.value)
+  </script>
 </body>
 </html>
