@@ -1,3 +1,5 @@
+'use strict';
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,7 +20,7 @@
  */
 var app = {
   // Application Constructor
-  initialize: function() {
+  initialize: function initialize() {
     document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
   },
 
@@ -26,31 +28,32 @@ var app = {
   //
   // Bind any cordova events here. Common events are:
   // 'pause', 'resume', etc.
-  onDeviceReady: function() {
+  onDeviceReady: function onDeviceReady() {
     // http://stackoverflow.com/questions/935127/how-to-access-parent-iframe-from-javascript
     // https://stackoverflow.com/questions/3588315/how-to-check-if-the-user-can-go-back-in-browser-history-or-not/16580022
     // https://stackoverflow.com/a/7651297/6086756
 
-    alert("sangar");
-
     // Hijack Back Button
-    var iframe = document.body.getElementsByTagName('iframe')[0]
+    var iframe = document.body.getElementsByTagName('iframe')[0];
     function onBackKeyDown(e) {
       e.preventDefault();
-      if (iframe.contentWindow.document.referrer === "") {
-        navigator.app.exitApp();
-      }
-      else {
-        iframe.contentWindow.history.back();
-      }
+
+      const iframeLocation = iframe.contentWindow.location.href
+      // back
+      iframe.contentWindow.history.back();
+
+      setTimeout(() => {
+        const newIframeLocation = iframe.contentWindow.location.href
+        if (iframeLocation === newIframeLocation) {
+          navigator.app.exitApp();
+        }
+      }, 500)
     }
     document.addEventListener("backbutton", onBackKeyDown, false);
-
 
     function injectToIframe(func, name) {
       iframe.contentWindow.cordova[name] = func;
     }
-
 
     // Show when device ready
     iframe.style.display = "block";
@@ -75,31 +78,29 @@ var app = {
 
     // Inject when the plugin required custom constructor that web doesn't know
     injectToIframe(function (success, error, options) {
-      navigator.geolocation.getCurrentPosition
-        (function (position) {
-          var webObject = {
-            coords: {
-              accuracy: position.coords.accuracy,
-              altitude: position.coords.altitude,
-              altitudeAccuracy: position.coords.altitudeAccuracy,
-              heading: position.coords.heading,
-              latitude: position.coords.latitude,
-              longitude: position.coords.longitude,
-              speed: position.coords.speed,
-            },
-            timestamp: position.timestamp,
-          }
-          return success(webObject);
-        }, function (err) {
-          var webObject = {
-            code: err.code,
-            message: err.message,
-          }
-          return error(webObject);
-        }, options || null)
+      navigator.geolocation.getCurrentPosition(function (position) {
+        var webObject = {
+          coords: {
+            accuracy: position.coords.accuracy,
+            altitude: position.coords.altitude,
+            altitudeAccuracy: position.coords.altitudeAccuracy,
+            heading: position.coords.heading,
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            speed: position.coords.speed
+          },
+          timestamp: position.timestamp
+        };
+        return success(webObject);
+      }, function (err) {
+        var webObject = {
+          code: err.code,
+          message: err.message
+        };
+        return error(webObject);
+      }, options || null);
     }, "getCurrentPosition");
-
-  },
+  }
 
 };
 

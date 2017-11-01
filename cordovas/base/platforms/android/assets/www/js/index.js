@@ -31,18 +31,27 @@ var app = {
     // https://stackoverflow.com/questions/3588315/how-to-check-if-the-user-can-go-back-in-browser-history-or-not/16580022
     // https://stackoverflow.com/a/7651297/6086756
 
-    alert("sangar");
-
     // Hijack Back Button
     var iframe = document.body.getElementsByTagName('iframe')[0]
     function onBackKeyDown(e) {
       e.preventDefault();
-      if (iframe.contentWindow.document.referrer === "") {
-        navigator.app.exitApp();
-      }
-      else {
-        iframe.contentWindow.history.back();
-      }
+      const iframeLocation = iframe.contentWindow.location.href
+      // back
+      iframe.contentWindow.history.back();
+
+      setTimeout(() => {
+        const newIframeLocation = iframe.contentWindow.location.href
+        if (iframeLocation === newIframeLocation) {
+          navigator.app.exitApp();
+        }
+      }, 500)
+
+      // if (iframe.contentWindow.document.referrer === "") {
+      //   navigator.app.exitApp();
+      // }
+      // else {
+      //   iframe.contentWindow.history.back();
+      // }
     }
     document.addEventListener("backbutton", onBackKeyDown, false);
 
